@@ -1,127 +1,154 @@
 package com.lvtinger.converter;
 
+import com.lvtinger.assembly.ClassBuilder;
+import com.lvtinger.assembly.TypeExtend;
 import com.lvtinger.common.ReflectionUtils;
-import jdk.internal.org.objectweb.asm.ClassWriter;
-import jdk.internal.org.objectweb.asm.MethodVisitor;
-import jdk.internal.org.objectweb.asm.Opcodes;
+import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.Type;
 
 import java.lang.reflect.Field;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.Random;
+import java.util.Set;
+import java.util.concurrent.ConcurrentSkipListSet;
 
+/**
+ * bean转换类，类型相同，名称相同的field可以相互转换
+ *
+ * @author qiuxu
+ */
 public class ConverterFactory {
 
-    private final static Map<String, Converter<?, ?>> HOLDER = new ConcurrentHashMap<String, Converter<?, ?>>();
-
-    private static class Loader extends ClassLoader{
-        public final static Loader instance = new Loader();
-
-        public Class<?> define(String name, byte[] bytes){
-            return this.defineClass(name, bytes, 0, bytes.length);
-        }
-    }
+    private final static Set<ConverterWrapper> HOLDER = new ConcurrentSkipListSet<ConverterWrapper>();
 
     public static <T, R> Converter<T, R> get(Class<T> target, Class<R> result) {
-
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(target.getName());
-        stringBuilder.append("To");
-        stringBuilder.append(result.getName());
-
-        Converter<T, R> converter = (Converter<T, R>)HOLDER.get(stringBuilder.toString());
-
-        if(converter == null){
-            converter = generate(target, result);
+        ConverterWrapper wrapper = HOLDER.stream().filter(x -> x.result.equals(result) && x.target.equals(target))
+                .findFirst().orElse(null);
+        if (wrapper != null) {
+            return (Converter<T, R>) wrapper.converter;
         }
 
-        return converter;
+        Converter<T, R> converter = generate(target, result);
 
+        wrapper = new ConverterWrapper(target, result, converter);
+        HOLDER.add(wrapper);
+
+        return converter;
     }
 
-    private static <T, R> Converter<T, R> generate(Class<T> target, Class<R> result){
+    private static <T, R> Converter<T, R> generate(Class<T> target, Class<R> result) {
+        String name = generateName(target, result);
+        ClassBuilder builder = ClassBuilder.init(name, Object.class, Converter.class);
 
-        Field[] targetFields = ReflectionUtils.getFields(target);
-        Field[] resultFields = ReflectionUtils.getFields(result);
+        MethodVisitor convert = builder.visitor("convert", result, target);
 
+        String resultName = Type.getInternalName(result);
+        String targetName = Type.getInternalName(target);
 
-        //定义类名
-        StringBuilder stringBuilder = new StringBuilder("com/lvtinger/converter/");
-        stringBuilder.append(target.getSimpleName());
-        stringBuilder.append("_TO_");
-        stringBuilder.append(result.getSimpleName());
-        stringBuilder.append("_Converter");
+        convert.visitTypeInsn(Opcodes.NEW, resultName);
+        convert.visitInsn(Opcodes.DUP);
+        convert.visitMethodInsn(Opcodes.INVOKESPECIAL, resultName, "<init>", "()V", false);
+        convert.visitVarInsn(Opcodes.ASTORE, 2);
 
-        String className = stringBuilder.toString();
+        Field[] targetFieldArray = ReflectionUtils.getFields(target);
+        Field[] resultFieldArray = ReflectionUtils.getFields(result);
 
-        //定义类
-        ClassWriter classWriter = new ClassWriter(ClassWriter.COMPUTE_FRAMES);
-        classWriter.visit(Opcodes.V1_8,
-                Opcodes.ACC_PUBLIC,
-                className,
-                "java/lang/Object",
-                null,
-                new String[]{"com/lvtinger/converter/Converter"});
+        if (targetFieldArray.length > 0 && resultFieldArray.length > 0) {
+            int targetLength = targetFieldArray.length;
+            int resultLength = resultFieldArray.length;
 
-        //定义构造函数
-        MethodVisitor methodVisitor = classWriter.visitMethod(Opcodes.ACC_PUBLIC,
-                "<init>",
-                "()V",
-                null,
-                null);
-        methodVisitor.visitCode();
-        methodVisitor.visitVarInsn(Opcodes.ALOAD, 0);
-        methodVisitor.visitMethodInsn(Opcodes.INVOKESPECIAL, "java/lang/Object", "<init>", "()V");
-        methodVisitor.visitInsn(Opcodes.RETURN);
-        methodVisitor.visitMaxs(1,1);
-        methodVisitor.visitEnd();
+            for (int i = 0; i < targetLength; i++) {
+                Field targetField = targetFieldArray[i];
+                String targetFieldName = targetField.getName();
+                Class<?> targetFieldType = targetField.getType();
+                for (int j = 0; j < resultLength; j++) {
+                    Field resultField = resultFieldArray[j];
+                    if (targetFieldName.equals(resultField.getName())
+                            && targetFieldType.equals(resultField.getType())) {
 
-        stringBuilder.delete(0, stringBuilder.length());
-
-        String resultName = result.getName().replace("\\.", "/");
-        String targetName = target.getName().replace("\\.", "/");
-
-        stringBuilder.append("(L");
-        stringBuilder.append(targetName);
-        stringBuilder.append(";)L");
-        stringBuilder.append(resultName);
-        stringBuilder.append(";");
-
-        //定义转换函数
-        methodVisitor = classWriter.visitMethod(Opcodes.ACC_PUBLIC,
-                "convert",
-                stringBuilder.toString(),
-                null, null);
-
-        //实例化目标值
-        methodVisitor.visitTypeInsn(Opcodes.NEW, resultName);
-        methodVisitor.visitInsn(Opcodes.DUP);
-        methodVisitor.visitMethodInsn(Opcodes.INVOKESPECIAL, resultName, "<init>", "()V");
-        methodVisitor.visitVarInsn(Opcodes.ASTORE, 2);
+                        String fieldName = targetFieldName.length() == 1
+                                ? targetFieldName.toUpperCase()
+                                : targetFieldName.substring(0, 1).toUpperCase()
+                                + targetFieldName.substring(1);
 
 
-        //返回结果
-        methodVisitor.visitVarInsn(Opcodes.ALOAD, 2);
-        methodVisitor.visitInsn(Opcodes.ARETURN);
+                        convert.visitVarInsn(Opcodes.LSTORE, 2);
+                        convert.visitVarInsn(Opcodes.LSTORE, 1);
+                        convert.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
+                                targetName,
+                                "get" + fieldName,
+                                TypeExtend.getMethodDescriptor(targetFieldType, null),
+                                false);
+                        convert.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
+                                resultName,
+                                "set" + fieldName,
+                                TypeExtend.getMethodDescriptor(void.class, new Class[]{targetFieldType}),
+                                false);
+
+                        break;
+                    }
+                }
+            }
+        }
 
 
-        methodVisitor.visitMaxs(2,3);
-        methodVisitor.visitEnd();
+        convert.visitVarInsn(Opcodes.ALOAD, 2);
+        convert.visitInsn(Opcodes.ARETURN);
+        convert.visitEnd();
 
-
-        byte[] bytes = classWriter.toByteArray();
-
-
-
-        Class<?> define = Loader.instance.define(className, bytes);
+        Class<?> build = builder.build();
 
         try {
-            return (Converter<T, R>) define.newInstance();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
+            return (Converter<T, R>) build.newInstance();
+        } catch (InstantiationException | IllegalAccessException e) {
             e.printStackTrace();
         }
 
         return null;
+    }
+
+    private static String generateName(Class target, Class result) {
+        StringBuilder builder = new StringBuilder("com.lvtinger.converter.");
+        builder.append(TypeExtend.firstToLowerCase(result.getSimpleName()));
+        builder.append(".");
+        builder.append(target.getSimpleName());
+        builder.append(new Random().nextInt(9000) + 1000);
+        return builder.toString();
+    }
+
+    private static class ConverterWrapper {
+        private Class target;
+        private Class result;
+        private Converter<?, ?> converter;
+
+        public Class getTarget() {
+            return target;
+        }
+
+        public void setTarget(Class target) {
+            this.target = target;
+        }
+
+        public Class getResult() {
+            return result;
+        }
+
+        public void setResult(Class result) {
+            this.result = result;
+        }
+
+        public Converter<?, ?> getConverter() {
+            return converter;
+        }
+
+        public void setConverter(Converter<?, ?> converter) {
+            this.converter = converter;
+        }
+
+        public ConverterWrapper(Class target, Class result, Converter<?, ?> converter) {
+            this.target = target;
+            this.result = result;
+            this.converter = converter;
+        }
     }
 }

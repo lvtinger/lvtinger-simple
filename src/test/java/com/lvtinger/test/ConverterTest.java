@@ -11,6 +11,9 @@ public class ConverterTest extends ClassLoader{
     @Test
     public void test(){
         AccountVO vo = new AccountVO();
+        vo.setId(123456L);
+        vo.setPrincipalId(654321L);
+        vo.setUsername("risesun");
         Converter<AccountVO, Account> converter = ConverterFactory.get(AccountVO.class, Account.class);
         Account account = converter.convert(vo);
         System.out.println(account);

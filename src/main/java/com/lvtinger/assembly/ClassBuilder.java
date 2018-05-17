@@ -15,7 +15,7 @@ public class ClassBuilder extends ClassLoader implements Opcodes {
 
     public static ClassBuilder init(String name) {
         return new ClassBuilder()
-                .define(name, Object.class, null);
+                .define(name, Object.class, (Class[]) null);
     }
 
     public static ClassBuilder init(String name, Class<?> superClass) {

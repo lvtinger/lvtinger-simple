@@ -3,7 +3,7 @@ package com.lvtinger.assembly;
 import org.objectweb.asm.Type;
 
 public class TypeExtend {
-    private final static Type[] types = new Type[0];
+    private final static Type[] TYPES = new Type[0];
 
     public static String[] getInternalName(Class... classes) {
         if (classes == null) {
@@ -25,7 +25,7 @@ public class TypeExtend {
     public static String getMethodDescriptor(Class<?> returnType, Class<?>[] parameterTypes){
         Type $returnType = Type.getType(returnType);
         if(parameterTypes == null || parameterTypes.length == 0){
-            return Type.getMethodDescriptor($returnType, types);
+            return Type.getMethodDescriptor($returnType, TYPES);
         }
         int length = parameterTypes.length;
 
@@ -35,5 +35,17 @@ public class TypeExtend {
         }
 
         return Type.getMethodDescriptor($returnType, $parameterTypes);
+    }
+
+    public static String firstToUpperCase(String name){
+        return name.length() == 1
+                ? name.toUpperCase()
+                : name.substring(0, 1).toUpperCase() + name.substring(1);
+    }
+
+    public static String firstToLowerCase(String name){
+        return name.length() == 1
+                ? name.toLowerCase()
+                : name.substring(0, 1).toLowerCase() + name.substring(1);
     }
 }
