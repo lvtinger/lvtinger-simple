@@ -5,8 +5,6 @@ import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 
-import java.lang.reflect.Method;
-
 public class ClassBuilder extends ClassLoader implements Opcodes {
 
     private ClassWriter writer;

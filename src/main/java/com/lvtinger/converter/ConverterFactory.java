@@ -49,6 +49,7 @@ public class ConverterFactory {
         stringBuilder.append(target.getSimpleName());
         stringBuilder.append("_TO_");
         stringBuilder.append(result.getSimpleName());
+        stringBuilder.append("_Converter");
 
         String className = stringBuilder.toString();
 
