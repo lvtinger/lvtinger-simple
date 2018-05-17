@@ -45,7 +45,7 @@ public class ConverterFactory {
 
 
         //定义类名
-        StringBuilder stringBuilder = new StringBuilder();
+        StringBuilder stringBuilder = new StringBuilder("com/lvtinger/converter/");
         stringBuilder.append(target.getSimpleName());
         stringBuilder.append("_TO_");
         stringBuilder.append(result.getSimpleName());
@@ -57,9 +57,9 @@ public class ConverterFactory {
         classWriter.visit(Opcodes.V1_8,
                 Opcodes.ACC_PUBLIC,
                 className,
-                null,
                 "java/lang/Object",
-                null);
+                null,
+                new String[]{"com/lvtinger/converter/Converter"});
 
         //定义构造函数
         MethodVisitor methodVisitor = classWriter.visitMethod(Opcodes.ACC_PUBLIC,
@@ -108,6 +108,8 @@ public class ConverterFactory {
 
 
         byte[] bytes = classWriter.toByteArray();
+
+
 
         Class<?> define = Loader.instance.define(className, bytes);
 
