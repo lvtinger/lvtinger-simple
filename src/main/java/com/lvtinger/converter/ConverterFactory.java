@@ -21,6 +21,14 @@ public class ConverterFactory {
 
     private final static Set<ConverterWrapper> HOLDER = new ConcurrentSkipListSet<>();
 
+    /**
+     * 获取转换器
+     * @param target 转换参数类型
+     * @param result 转换结果类型
+     * @param <T> 泛型 target
+     * @param <R> 泛型 result
+     * @return 转换器
+     */
     @SuppressWarnings("unchecked")
     public static <T, R> Converter<T, R> get(Class<T> target, Class<R> result) {
         ConverterWrapper wrapper = HOLDER.stream().filter(x -> x.result.equals(result) && x.target.equals(target))
