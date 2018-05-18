@@ -31,9 +31,8 @@ public class ConverterTest extends ClassLoader{
     }
 
     @Test
-    public void testString(){
-        System.out.println(Type.getMethodDescriptor(Type.VOID_TYPE, Type.getType(Object.class)));
+    public void testConverter(){
+        String className = "com.lvtinger.test.AccountConverter";
+
     }
-
-
 }

@@ -13,6 +13,10 @@ public class ClassBuilder extends ClassLoader implements Opcodes {
     private ClassBuilder() {
     }
 
+    public ClassWriter getWriter() {
+         return writer;
+    }
+
     public static ClassBuilder init(String name) {
         return new ClassBuilder()
                 .define(name, Object.class, (Class[]) null);

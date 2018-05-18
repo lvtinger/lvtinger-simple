@@ -72,8 +72,8 @@ public class ConverterFactory {
                                 + targetFieldName.substring(1);
 
 
-                        convert.visitVarInsn(Opcodes.LSTORE, 2);
-                        convert.visitVarInsn(Opcodes.LSTORE, 1);
+                        convert.visitVarInsn(Opcodes.ALOAD, 2);
+                        convert.visitVarInsn(Opcodes.ALOAD, 1);
                         convert.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
                                 targetName,
                                 "get" + fieldName,
@@ -94,6 +94,21 @@ public class ConverterFactory {
 
         convert.visitVarInsn(Opcodes.ALOAD, 2);
         convert.visitInsn(Opcodes.ARETURN);
+        convert.visitMaxs(2,3);
+        convert.visitEnd();
+
+        convert = builder.getWriter().visitMethod(Opcodes.ACC_PUBLIC + Opcodes.ACC_SYNTHETIC + Opcodes.ACC_BRIDGE,
+                "convert",
+                TypeExtend.getMethodDescriptor(Object.class, new Class[]{Object.class}),
+                null,
+                null);
+
+        convert.visitVarInsn(Opcodes.ALOAD, 0);
+        convert.visitVarInsn(Opcodes.ALOAD, 1);
+        convert.visitTypeInsn(Opcodes.CHECKCAST, Type.getInternalName(target));
+        convert.visitMethodInsn(Opcodes.INVOKEVIRTUAL, name, "convert", TypeExtend.getMethodDescriptor(result, new Class[]{target}));
+        convert.visitInsn(Opcodes.ARETURN);
+        convert.visitMaxs(2, 2);
         convert.visitEnd();
 
         Class<?> build = builder.build();
@@ -108,9 +123,10 @@ public class ConverterFactory {
     }
 
     private static String generateName(Class target, Class result) {
-        StringBuilder builder = new StringBuilder("com.lvtinger.converter.");
+        StringBuilder builder = new StringBuilder();
+        //builder.append("com.lvtinger.converter.");
         builder.append(TypeExtend.firstToLowerCase(result.getSimpleName()));
-        builder.append(".");
+        //builder.append(".");
         builder.append(target.getSimpleName());
         builder.append(new Random().nextInt(9000) + 1000);
         return builder.toString();
