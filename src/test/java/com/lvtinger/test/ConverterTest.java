@@ -3,13 +3,12 @@ package com.lvtinger.test;
 import com.lvtinger.assembly.ClassBuilder;
 import com.lvtinger.converter.Converter;
 import com.lvtinger.converter.ConverterFactory;
-import jdk.internal.org.objectweb.asm.Type;
 import org.junit.Test;
 
-public class ConverterTest extends ClassLoader{
+public class ConverterTest extends ClassLoader {
 
     @Test
-    public void test(){
+    public void test() {
         AccountVO vo = new AccountVO();
         vo.setId(123456L);
         vo.setPrincipalId(654321L);
@@ -31,7 +30,7 @@ public class ConverterTest extends ClassLoader{
     }
 
     @Test
-    public void testConverter(){
+    public void testConverter() {
         String className = "com.lvtinger.test.AccountConverter";
 
     }

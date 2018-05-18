@@ -13,10 +13,6 @@ public class ClassBuilder extends ClassLoader implements Opcodes {
     private ClassBuilder() {
     }
 
-    public ClassWriter getWriter() {
-         return writer;
-    }
-
     public static ClassBuilder init(String name) {
         return new ClassBuilder()
                 .define(name, Object.class, (Class[]) null);
@@ -30,6 +26,10 @@ public class ClassBuilder extends ClassLoader implements Opcodes {
     public static ClassBuilder init(String name, Class<?> superClass, Class... interfaces) {
         return new ClassBuilder()
                 .define(name, superClass, interfaces);
+    }
+
+    public ClassWriter getWriter() {
+        return writer;
     }
 
     private ClassBuilder define(String name, Class<?> superClass, Class... interfaces) {
@@ -57,7 +57,7 @@ public class ClassBuilder extends ClassLoader implements Opcodes {
         return this;
     }
 
-    public ClassBuilder property(String name, Class<?> type){
+    public ClassBuilder property(String name, Class<?> type) {
         field(name, type)
                 .setter(name, type)
                 .getter(name, type);

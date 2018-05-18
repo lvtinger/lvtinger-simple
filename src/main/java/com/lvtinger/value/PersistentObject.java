@@ -42,4 +42,14 @@ public abstract class PersistentObject<K extends Serializable> implements Serial
     public void setStatus(Integer status) {
         this.status = status;
     }
+
+    @Override
+    public String toString() {
+        return "PersistentObject{" +
+                "id=" + id +
+                ", createTime=" + createTime +
+                ", updateTime=" + updateTime +
+                ", status=" + status +
+                '}';
+    }
 }

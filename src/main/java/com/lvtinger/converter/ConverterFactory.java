@@ -23,10 +23,11 @@ public class ConverterFactory {
 
     /**
      * 获取转换器
+     *
      * @param target 转换参数类型
      * @param result 转换结果类型
-     * @param <T> 泛型 target
-     * @param <R> 泛型 result
+     * @param <T>    泛型 target
+     * @param <R>    泛型 result
      * @return 转换器
      */
     @SuppressWarnings("unchecked")
@@ -68,8 +69,9 @@ public class ConverterFactory {
                 String targetFieldName = targetField.getName();
                 Class<?> targetFieldType = targetField.getType();
                 for (Field resultField : resultFieldArray) {
-                    if (targetFieldName.equals(resultField.getName())
-                            && targetFieldType.equals(resultField.getType())) {
+                    if (targetFieldName.equals(resultField.getName())) {
+
+                        Class<?> resultFieldType = resultField.getType();
 
                         String fieldName = targetFieldName.length() == 1
                                 ? targetFieldName.toUpperCase()
@@ -87,7 +89,7 @@ public class ConverterFactory {
                         convert.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
                                 resultName,
                                 "set" + fieldName,
-                                TypeExtend.getMethodDescriptor(void.class, new Class[]{targetFieldType}),
+                                TypeExtend.getMethodDescriptor(void.class, new Class[]{resultFieldType}),
                                 false);
 
                         break;
@@ -99,7 +101,7 @@ public class ConverterFactory {
 
         convert.visitVarInsn(Opcodes.ALOAD, 2);
         convert.visitInsn(Opcodes.ARETURN);
-        convert.visitMaxs(2,3);
+        convert.visitMaxs(2, 3);
         convert.visitEnd();
 
         convert = builder.getWriter().visitMethod(Opcodes.ACC_PUBLIC + Opcodes.ACC_SYNTHETIC + Opcodes.ACC_BRIDGE,

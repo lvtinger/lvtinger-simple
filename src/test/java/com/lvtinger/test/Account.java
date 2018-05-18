@@ -6,6 +6,9 @@ public class Account extends PersistentObject<Long> {
     private String username;
     private Long principalId;
 
+    public Account() {
+    }
+
     public String getUsername() {
         return username;
     }
@@ -20,12 +23,6 @@ public class Account extends PersistentObject<Long> {
 
     public void setPrincipalId(Long principalId) {
         this.principalId = principalId;
-    }
-
-    public Account() {
-        this.setId(1L);
-        this.username = "risesun";
-        this.principalId = 123456L;
     }
 
     @Override
