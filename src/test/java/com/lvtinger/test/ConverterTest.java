@@ -32,6 +32,9 @@ public class ConverterTest extends ClassLoader {
     @Test
     public void testConverter() {
         String className = "com.lvtinger.test.AccountConverter";
+    }
 
+    public void jdbcTest(){
+        String url = "jdbc:mysql://localhost:3306/account";
     }
 }
