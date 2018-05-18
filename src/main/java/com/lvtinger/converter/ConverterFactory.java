@@ -19,8 +19,9 @@ import java.util.concurrent.ConcurrentSkipListSet;
  */
 public class ConverterFactory {
 
-    private final static Set<ConverterWrapper> HOLDER = new ConcurrentSkipListSet<ConverterWrapper>();
+    private final static Set<ConverterWrapper> HOLDER = new ConcurrentSkipListSet<>();
 
+    @SuppressWarnings("unchecked")
     public static <T, R> Converter<T, R> get(Class<T> target, Class<R> result) {
         ConverterWrapper wrapper = HOLDER.stream().filter(x -> x.result.equals(result) && x.target.equals(target))
                 .findFirst().orElse(null);
@@ -36,6 +37,7 @@ public class ConverterFactory {
         return converter;
     }
 
+    @SuppressWarnings("unchecked")
     private static <T, R> Converter<T, R> generate(Class<T> target, Class<R> result) {
         String name = generateName(target, result);
         ClassBuilder builder = ClassBuilder.init(name, Object.class, Converter.class);
@@ -54,15 +56,10 @@ public class ConverterFactory {
         Field[] resultFieldArray = ReflectionUtils.getFields(result);
 
         if (targetFieldArray.length > 0 && resultFieldArray.length > 0) {
-            int targetLength = targetFieldArray.length;
-            int resultLength = resultFieldArray.length;
-
-            for (int i = 0; i < targetLength; i++) {
-                Field targetField = targetFieldArray[i];
+            for (Field targetField : targetFieldArray) {
                 String targetFieldName = targetField.getName();
                 Class<?> targetFieldType = targetField.getType();
-                for (int j = 0; j < resultLength; j++) {
-                    Field resultField = resultFieldArray[j];
+                for (Field resultField : resultFieldArray) {
                     if (targetFieldName.equals(resultField.getName())
                             && targetFieldType.equals(resultField.getType())) {
 
@@ -106,7 +103,7 @@ public class ConverterFactory {
         convert.visitVarInsn(Opcodes.ALOAD, 0);
         convert.visitVarInsn(Opcodes.ALOAD, 1);
         convert.visitTypeInsn(Opcodes.CHECKCAST, Type.getInternalName(target));
-        convert.visitMethodInsn(Opcodes.INVOKEVIRTUAL, name, "convert", TypeExtend.getMethodDescriptor(result, new Class[]{target}));
+        convert.visitMethodInsn(Opcodes.INVOKEVIRTUAL, name, "convert", TypeExtend.getMethodDescriptor(result, new Class[]{target}), false);
         convert.visitInsn(Opcodes.ARETURN);
         convert.visitMaxs(2, 2);
         convert.visitEnd();
@@ -123,7 +120,8 @@ public class ConverterFactory {
     }
 
     private static String generateName(Class target, Class result) {
-        StringBuilder builder = new StringBuilder();
+        StringBuilder builder;
+        builder = new StringBuilder();
         //builder.append("com.lvtinger.converter.");
         builder.append(TypeExtend.firstToLowerCase(result.getSimpleName()));
         //builder.append(".");
@@ -137,31 +135,7 @@ public class ConverterFactory {
         private Class result;
         private Converter<?, ?> converter;
 
-        public Class getTarget() {
-            return target;
-        }
-
-        public void setTarget(Class target) {
-            this.target = target;
-        }
-
-        public Class getResult() {
-            return result;
-        }
-
-        public void setResult(Class result) {
-            this.result = result;
-        }
-
-        public Converter<?, ?> getConverter() {
-            return converter;
-        }
-
-        public void setConverter(Converter<?, ?> converter) {
-            this.converter = converter;
-        }
-
-        public ConverterWrapper(Class target, Class result, Converter<?, ?> converter) {
+        ConverterWrapper(Class target, Class result, Converter<?, ?> converter) {
             this.target = target;
             this.result = result;
             this.converter = converter;
