@@ -1,62 +1,93 @@
 package com.lvtinger.test.repository;
 
+import com.lvtinger.database.core.Database;
 import com.lvtinger.test.domain.Account;
 
-import javax.sql.DataSource;
-import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class AccountRepository {
-    private DataSource source;
 
-    public AccountRepository() {
+    private Database database;
+
+    public Database getDatabase() {
+        return database;
     }
 
-    public DataSource getSource() {
-        return source;
-    }
-
-    public void setSource(DataSource source) {
-        this.source = source;
+    public void setDatabase(Database database) {
+        this.database = database;
     }
 
     public boolean insert(Account account) {
-        Connection connection = null;
-        PreparedStatement statement = null;
+
+        String sql = "INSERT INTO account(id, createTime, updateTime, status, username, principal) VALUES (?,?,?,?,?,?)";
+        PreparedStatement statement = database.prepare(sql);
         try {
-            connection = source.getConnection();
-            String sql = "INSERT INTO account(id, createTime, updateTime, status, username, principal) VALUES (?,?,?,?,?,?)";
-            statement = connection.prepareStatement(sql);
             statement.setLong(1, account.getId());
             statement.setLong(2, account.getCreateTime());
             statement.setLong(3, account.getUpdateTime());
             statement.setLong(4, account.getStatus());
             statement.setString(5, account.getUsername());
             statement.setLong(6, account.getPrincipalId());
-            int i = statement.executeUpdate();
-            return i > 0;
+            return statement.executeUpdate() == 1;
         } catch (SQLException e) {
-            //ignore
+            e.printStackTrace();
+            return false;
         } finally {
             if (statement != null) {
                 try {
                     statement.close();
                 } catch (SQLException e) {
-                    //ignore
-                }
-            }
-
-            if (connection != null) {
-                try {
-                    connection.close();
-                } catch (SQLException e) {
-                    //ignore
                 }
             }
         }
+    }
 
+    public boolean update(Account account){
+        String sql = "UPDATE account SET updateTime = ?, status = ?, username = ?, principal = ? WHERE id = ?";
+        PreparedStatement statement = database.prepare(sql);
 
-        return true;
+        try {
+            statement.setLong(1, account.getUpdateTime());
+            statement.setInt(2, account.getStatus());
+            statement.setString(3, account.getUsername());
+            statement.setLong(4, account.getPrincipalId());
+            statement.setLong(5, account.getId());
+            return statement.executeUpdate() == 1;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+    public Account getById(Long accountId) {
+        String sql = "SELECT id, createTime, updateTime, status, username, principal FROM account WHERE id = ?";
+        PreparedStatement statement = database.prepare(sql);
+        try {
+            statement.setLong(1, accountId);
+            ResultSet set = statement.executeQuery();
+            if (set.next()) {
+                Account account = new Account();
+                account.setId(set.getLong(0));
+                account.setCreateTime(set.getLong(1));
+                account.setUpdateTime(set.getLong(2));
+                account.setStatus(set.getInt(3));
+                account.setUsername(set.getString(4));
+                account.setPrincipalId(set.getLong(5));
+                return account;
+            }
+            return null;
+        } catch (SQLException e) {
+            return null;
+        } finally {
+            if (statement != null) {
+                try {
+                    statement.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
     }
 }
