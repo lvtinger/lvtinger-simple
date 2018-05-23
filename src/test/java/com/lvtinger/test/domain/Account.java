@@ -1,4 +1,4 @@
-package com.lvtinger.test;
+package com.lvtinger.test.domain;
 
 import com.lvtinger.value.PersistentObject;
 

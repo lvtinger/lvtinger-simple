@@ -20,7 +20,7 @@ public class ClassBuilder extends ClassLoader implements Opcodes {
 
     public static ClassBuilder init(String name, Class<?> superClass) {
         return new ClassBuilder()
-                .define(name, superClass, null);
+                .define(name, superClass, (Class) null);
     }
 
     public static ClassBuilder init(String name, Class<?> superClass, Class... interfaces) {
