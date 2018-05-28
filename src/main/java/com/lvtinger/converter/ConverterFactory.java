@@ -132,9 +132,7 @@ public class ConverterFactory {
     private static String generateName(Class target, Class result) {
         StringBuilder builder;
         builder = new StringBuilder();
-        //builder.append("com.lvtinger.converter.");
         builder.append(TypeExtend.firstToLowerCase(result.getSimpleName()));
-        //builder.append(".");
         builder.append(target.getSimpleName());
         builder.append(new Random().nextInt(9000) + 1000);
         return builder.toString();

@@ -6,6 +6,9 @@ public abstract class PersistentObject<K extends Serializable> implements Serial
 
     private static final long serialVersionUID = 1799117846245835199L;
 
+    public static final int STATUS_NORMAL = 1;
+    public static final int STATUS_DELETE = 2;
+
     private K id;
     private Long createTime;
     private Long updateTime;
