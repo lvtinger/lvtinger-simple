@@ -8,6 +8,13 @@ import java.lang.annotation.Target;
 @Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Column {
-    public String value() default "";
-    public boolean ignore() default false;
+    String value() default "";
+    boolean ignore() default false;
+    int type() default 0;
+    int attr() default 0;
+
+    int primaryKey = 1;
+    int statusColumn= 2;
+    int createTimeColumn = 3;
+    int updateTimeColumn = 4;
 }

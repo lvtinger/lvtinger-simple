@@ -4,7 +4,6 @@ import com.lvtinger.assembly.ClassBuilder;
 import com.lvtinger.common.StringUtils;
 import com.lvtinger.database.annotation.Column;
 import com.lvtinger.database.annotation.Database;
-import com.lvtinger.database.annotation.Identity;
 import com.lvtinger.database.annotation.Table;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Type;
@@ -79,11 +78,6 @@ public class RepositoryGeneratorImpl implements RepositoryGenerator {
             property.type = field.getType();
             property.column = field.getName();
 
-            Identity identity = field.getAnnotation(Identity.class);
-            if(identity != null){
-                property.primaryKey = true;
-                property.generate = identity.autoGenerate();
-            }
         }
     }
 }
