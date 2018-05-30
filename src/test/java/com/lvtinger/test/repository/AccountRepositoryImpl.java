@@ -1,6 +1,5 @@
 package com.lvtinger.test.repository;
 
-import com.lvtinger.database.core.Database;
 import com.lvtinger.exception.DatabaseException;
 import com.lvtinger.test.domain.Account;
 import com.lvtinger.value.PersistentObject;
