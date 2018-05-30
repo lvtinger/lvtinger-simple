@@ -1,4 +1,4 @@
-package com.lvtinger.database.annotation;
+package com.lvtinger.database.persistence.annotation;
 
 public enum GenerationType {
     /**

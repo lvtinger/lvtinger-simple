@@ -1,4 +1,4 @@
-package com.lvtinger.database.annotation;
+package com.lvtinger.database.persistence.annotation;
 
 /**
  * 数据表

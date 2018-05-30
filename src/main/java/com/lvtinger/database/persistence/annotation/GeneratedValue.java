@@ -1,4 +1,4 @@
-package com.lvtinger.database.annotation;
+package com.lvtinger.database.persistence.annotation;
 
 public @interface GeneratedValue {
     GenerationType strategy() default  GenerationType.AUTO;
