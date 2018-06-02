@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 /**
  * 认证
+ *
  * @author qiuxu
  */
 public class Identity implements Serializable {

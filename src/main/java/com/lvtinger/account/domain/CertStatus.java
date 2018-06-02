@@ -2,6 +2,7 @@ package com.lvtinger.account.domain;
 
 /**
  * 认证状态
+ *
  * @author qiuxu
  */
 public enum CertStatus {
@@ -9,16 +10,16 @@ public enum CertStatus {
     private int value;
     private String name;
 
+    CertStatus(int value, String name) {
+        this.value = value;
+        this.name = name;
+    }
+
     public int getValue() {
         return value;
     }
 
     public String getName() {
         return name;
-    }
-
-    CertStatus(int value, String name) {
-        this.value = value;
-        this.name = name;
     }
 }

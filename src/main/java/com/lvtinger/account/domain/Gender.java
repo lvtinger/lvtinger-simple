@@ -2,6 +2,7 @@ package com.lvtinger.account.domain;
 
 /**
  * 性别
+ *
  * @author qiuxu
  */
 public enum Gender {
@@ -23,16 +24,16 @@ public enum Gender {
      */
     private String name;
 
+    Gender(int value, String name) {
+        this.value = value;
+        this.name = name;
+    }
+
     public int getValue() {
         return value;
     }
 
     public String getName() {
         return name;
-    }
-
-    Gender(int value, String name) {
-        this.value = value;
-        this.name = name;
     }
 }

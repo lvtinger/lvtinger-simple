@@ -2,6 +2,7 @@ package com.lvtinger.account.domain;
 
 /**
  * 账户状态
+ *
  * @author qiuxu
  */
 public enum AccountStatus {
@@ -30,16 +31,16 @@ public enum AccountStatus {
      */
     private String name;
 
+    AccountStatus(int value, String name) {
+        this.value = value;
+        this.name = name;
+    }
+
     public int getValue() {
         return value;
     }
 
     public String getName() {
         return name;
-    }
-
-    AccountStatus(int value, String name) {
-        this.value = value;
-        this.name = name;
     }
 }

@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 /**
  * 账户
+ *
  * @author qiuxu
  */
 public class Account implements Serializable {

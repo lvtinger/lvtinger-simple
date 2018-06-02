@@ -5,6 +5,7 @@ import java.util.Date;
 
 /**
  * 主体
+ *
  * @author qiuxu
  */
 public class Principal implements Serializable {

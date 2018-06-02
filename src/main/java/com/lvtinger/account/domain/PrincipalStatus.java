@@ -2,6 +2,7 @@ package com.lvtinger.account.domain;
 
 /**
  * 主体状态
+ *
  * @author qiuxu
  */
 public enum PrincipalStatus {
@@ -21,16 +22,16 @@ public enum PrincipalStatus {
     private int value;
     private String name;
 
+    PrincipalStatus(int value, String name) {
+        this.value = value;
+        this.name = name;
+    }
+
     public int getValue() {
         return value;
     }
 
     public String getName() {
         return name;
-    }
-
-    PrincipalStatus(int value, String name) {
-        this.value = value;
-        this.name = name;
     }
 }

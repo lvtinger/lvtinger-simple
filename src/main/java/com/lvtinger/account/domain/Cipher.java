@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 /**
  * 密码
+ *
  * @author qiuxu
  */
 public class Cipher implements Serializable {
