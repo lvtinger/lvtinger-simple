@@ -3,31 +3,22 @@ package com.lvtinger.account.domain;
 import java.io.Serializable;
 
 /**
- * 账户
- *
- * @author qiuxu
+ * 密码找回
  */
-public class Account implements Serializable {
-    private static final long serialVersionUID = 5023377117225980716L;
+public class Missing implements Serializable {
+    private static final long serialVersionUID = -1881392076068004576L;
     /**
-     * 账户id
-     */
-    private Long accountId;
-
-    /**
-     * 用户id
+     * 找回账户
      */
     private Long principalId;
-
     /**
-     * 用户名
+     * 验证码
      */
-    private String username;
-
+    private String validateCode;
     /**
-     * 状态
+     * 混码
      */
-    private AccountStatus status;
+    private String mixedCode;
     /**
      * 创建时间
      */
@@ -37,14 +28,6 @@ public class Account implements Serializable {
      */
     private Long updateTime;
 
-    public Long getAccountId() {
-        return accountId;
-    }
-
-    public void setAccountId(Long accountId) {
-        this.accountId = accountId;
-    }
-
     public Long getPrincipalId() {
         return principalId;
     }
@@ -53,20 +36,20 @@ public class Account implements Serializable {
         this.principalId = principalId;
     }
 
-    public String getUsername() {
-        return username;
+    public String getValidateCode() {
+        return validateCode;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setValidateCode(String validateCode) {
+        this.validateCode = validateCode;
     }
 
-    public AccountStatus getStatus() {
-        return status;
+    public String getMixedCode() {
+        return mixedCode;
     }
 
-    public void setStatus(AccountStatus principalStatus) {
-        this.status = principalStatus;
+    public void setMixedCode(String mixedCode) {
+        this.mixedCode = mixedCode;
     }
 
     public Long getCreateTime() {

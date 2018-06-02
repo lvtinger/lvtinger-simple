@@ -38,6 +38,14 @@ public class Principal implements Serializable {
      * 状态
      */
     private PrincipalStatus status;
+    /**
+     * 创建时间
+     */
+    private Long createTime;
+    /**
+     * 更新时间
+     */
+    private Long updateTime;
 
     public Long getPrincipalId() {
         return principalId;
@@ -93,5 +101,21 @@ public class Principal implements Serializable {
 
     public void setStatus(PrincipalStatus status) {
         this.status = status;
+    }
+
+    public Long getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Long createTime) {
+        this.createTime = createTime;
+    }
+
+    public Long getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Long updateTime) {
+        this.updateTime = updateTime;
     }
 }

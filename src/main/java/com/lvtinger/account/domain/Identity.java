@@ -29,6 +29,14 @@ public class Identity implements Serializable {
      * 背面图片
      */
     private String opposite;
+    /**
+     * 创建时间
+     */
+    private Long createTime;
+    /**
+     * 更新时间
+     */
+    private Long updateTime;
 
     /**
      * 认证状态
@@ -81,5 +89,21 @@ public class Identity implements Serializable {
 
     public void setCertStatus(CertStatus certStatus) {
         this.certStatus = certStatus;
+    }
+
+    public Long getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Long createTime) {
+        this.createTime = createTime;
+    }
+
+    public Long getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Long updateTime) {
+        this.updateTime = updateTime;
     }
 }

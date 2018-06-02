@@ -21,6 +21,14 @@ public class Cipher implements Serializable {
      * 混码
      */
     private String mixedCode;
+    /**
+     * 创建时间
+     */
+    private Long createTime;
+    /**
+     * 更新时间
+     */
+    private Long updateTime;
 
     public Long getPrincipalId() {
         return principalId;
@@ -44,5 +52,21 @@ public class Cipher implements Serializable {
 
     public void setMixedCode(String mixedCode) {
         this.mixedCode = mixedCode;
+    }
+
+    public Long getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Long createTime) {
+        this.createTime = createTime;
+    }
+
+    public Long getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Long updateTime) {
+        this.updateTime = updateTime;
     }
 }
