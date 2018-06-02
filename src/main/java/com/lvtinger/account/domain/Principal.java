@@ -1,5 +1,8 @@
 package com.lvtinger.account.domain;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -8,6 +11,8 @@ import java.util.Date;
  *
  * @author qiuxu
  */
+@Getter
+@Setter
 public class Principal implements Serializable {
     private static final long serialVersionUID = 407668278033160713L;
     /**
@@ -46,76 +51,4 @@ public class Principal implements Serializable {
      * 更新时间
      */
     private Long updateTime;
-
-    public Long getPrincipalId() {
-        return principalId;
-    }
-
-    public void setPrincipalId(Long principalId) {
-        this.principalId = principalId;
-    }
-
-    public String getNickname() {
-        return nickname;
-    }
-
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
-    }
-
-    public Date getBirthday() {
-        return birthday;
-    }
-
-    public void setBirthday(Date birthday) {
-        this.birthday = birthday;
-    }
-
-    public Gender getGender() {
-        return gender;
-    }
-
-    public void setGender(Gender gender) {
-        this.gender = gender;
-    }
-
-    public String getAvatar() {
-        return avatar;
-    }
-
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
-    }
-
-    public String getSummary() {
-        return summary;
-    }
-
-    public void setSummary(String summary) {
-        this.summary = summary;
-    }
-
-    public PrincipalStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(PrincipalStatus status) {
-        this.status = status;
-    }
-
-    public Long getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Long createTime) {
-        this.createTime = createTime;
-    }
-
-    public Long getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Long updateTime) {
-        this.updateTime = updateTime;
-    }
 }

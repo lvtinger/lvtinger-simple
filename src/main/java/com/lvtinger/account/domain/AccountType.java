@@ -3,29 +3,29 @@ package com.lvtinger.account.domain;
 import lombok.Getter;
 
 /**
- * 主体状态
- *
- * @author qiuxu
+ * 账户类型
  */
 @Getter
-public enum PrincipalStatus {
+public enum AccountType {
     /**
-     * 默认
+     * 名称
      */
-    normal(0, "默认"),
+    named(1, "命名"),
     /**
-     * 激活
+     * 手机
      */
-    active(1, "激活"),
+    phone(2, "电话"),
+
     /**
-     * 锁定
+     * 邮箱
      */
-    locked(2, "锁定");
+    email(3, "邮箱");
 
     private int value;
     private String name;
 
-    PrincipalStatus(int value, String name) {
+
+    AccountType(int value, String name) {
         this.value = value;
         this.name = name;
     }

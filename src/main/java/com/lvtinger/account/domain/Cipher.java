@@ -1,5 +1,8 @@
 package com.lvtinger.account.domain;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.io.Serializable;
 
 /**
@@ -7,6 +10,8 @@ import java.io.Serializable;
  *
  * @author qiuxu
  */
+@Getter
+@Setter
 public class Cipher implements Serializable {
     private static final long serialVersionUID = -5995550957681473712L;
     /**
@@ -30,43 +35,4 @@ public class Cipher implements Serializable {
      */
     private Long updateTime;
 
-    public Long getPrincipalId() {
-        return principalId;
-    }
-
-    public void setPrincipalId(Long principalId) {
-        this.principalId = principalId;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getMixedCode() {
-        return mixedCode;
-    }
-
-    public void setMixedCode(String mixedCode) {
-        this.mixedCode = mixedCode;
-    }
-
-    public Long getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Long createTime) {
-        this.createTime = createTime;
-    }
-
-    public Long getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Long updateTime) {
-        this.updateTime = updateTime;
-    }
 }

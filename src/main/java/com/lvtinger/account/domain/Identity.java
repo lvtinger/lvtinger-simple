@@ -1,5 +1,8 @@
 package com.lvtinger.account.domain;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.io.Serializable;
 
 /**
@@ -7,6 +10,8 @@ import java.io.Serializable;
  *
  * @author qiuxu
  */
+@Getter
+@Setter
 public class Identity implements Serializable {
     private static final long serialVersionUID = -8901976829947677641L;
     /**
@@ -43,67 +48,4 @@ public class Identity implements Serializable {
      */
     private CertStatus certStatus;
 
-    public Long getPrincipalId() {
-        return principalId;
-    }
-
-    public void setPrincipalId(Long principalId) {
-        this.principalId = principalId;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getFrontage() {
-        return frontage;
-    }
-
-    public void setFrontage(String frontage) {
-        this.frontage = frontage;
-    }
-
-    public String getOpposite() {
-        return opposite;
-    }
-
-    public void setOpposite(String opposite) {
-        this.opposite = opposite;
-    }
-
-    public CertStatus getCertStatus() {
-        return certStatus;
-    }
-
-    public void setCertStatus(CertStatus certStatus) {
-        this.certStatus = certStatus;
-    }
-
-    public Long getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Long createTime) {
-        this.createTime = createTime;
-    }
-
-    public Long getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Long updateTime) {
-        this.updateTime = updateTime;
-    }
 }

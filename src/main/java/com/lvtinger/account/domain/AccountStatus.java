@@ -1,10 +1,13 @@
 package com.lvtinger.account.domain;
 
+import lombok.Getter;
+
 /**
  * 账户状态
  *
  * @author qiuxu
  */
+@Getter
 public enum AccountStatus {
     /**
      * 默认
@@ -34,13 +37,5 @@ public enum AccountStatus {
     AccountStatus(int value, String name) {
         this.value = value;
         this.name = name;
-    }
-
-    public int getValue() {
-        return value;
-    }
-
-    public String getName() {
-        return name;
     }
 }

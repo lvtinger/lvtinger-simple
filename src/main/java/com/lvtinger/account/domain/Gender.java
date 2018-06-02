@@ -1,10 +1,13 @@
 package com.lvtinger.account.domain;
 
+import lombok.Getter;
+
 /**
  * 性别
  *
  * @author qiuxu
  */
+@Getter
 public enum Gender {
     /**
      * 男士
@@ -27,13 +30,5 @@ public enum Gender {
     Gender(int value, String name) {
         this.value = value;
         this.name = name;
-    }
-
-    public int getValue() {
-        return value;
-    }
-
-    public String getName() {
-        return name;
     }
 }

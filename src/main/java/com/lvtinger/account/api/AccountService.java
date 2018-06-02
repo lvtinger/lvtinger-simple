@@ -1,8 +1,12 @@
 package com.lvtinger.account.api;
 
+import com.lvtinger.account.value.*;
+
 public interface AccountService {
-    void register(String username, String password);
-    void login(String username, String password);
-    void change(Long principalId, String password);
-    void found(Long principalId);
+    RegisterResult register(String username, String password);
+    LoginResult login(String username, String password);
+    ValidateResult validate(Long principalId, String password);
+    ChangeResult change(Long principalId, String original, String replace);
+    FoundResult found(String username);
+    ResetResult reset(String password, String validateCode, String signKey);
 }
